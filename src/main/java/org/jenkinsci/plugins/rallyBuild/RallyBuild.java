@@ -125,14 +125,14 @@ public class RallyBuild extends Builder {
     	
     	if(rally!=null){
     		
-    		logger.info("Pre Condition Comment "+createComment);
-	    	if(preComment){
+
+	    	if(preComment!=null && preComment){
 	    		CommentAction comment = new CommentAction(expandedPreConditionText);
 	    		preConditions.add(comment);
 	    	}
 	    	
-	    	logger.info("Pre Condition Ready "+changeReady);
-	    	if(preReady){
+
+	    	if(preReady!=null && preReady){
 	    		ReadyAction ready = new ReadyAction(preReadyState);
 	    		preConditions.add(ready);
 	    	}
@@ -144,26 +144,25 @@ public class RallyBuild extends Builder {
 	    		}
 	    	}
 	    	
-    		logger.info("Create Comment "+createComment);
-	    	if(createComment){
+	    	if(createComment!=null && createComment){
 	    		CommentAction comment = new CommentAction(expandedCommentText);
 	    		rallyActions.add(comment);
 	    	}
 	    	
 	    	logger.info("Mark ready "+changeReady);
-	    	if(changeReady){
+	    	if(changeReady!=null && changeReady){
 	    		ReadyAction ready = new ReadyAction(issueReady);
 	    		rallyActions.add(ready);
 	    	}
 	    	
 	    	logger.info("Change State "+changeRallyState);
-	    	if(changeRallyState){
+	    	if(changeRallyState!=null && changeRallyState){
 	    		StateAction state = new StateAction(issueRallyState);
 	    		rallyActions.add(state);
 	    	}
 	    	
 	    	logger.info("Change State "+changeDefectRallyState);
-	    	if(changeDefectRallyState){
+	    	if(changeDefectRallyState!=null && changeDefectRallyState){
 	    		DefectStateAction defectState = new DefectStateAction(defectRallyState);
 	    		rallyActions.add(defectState);
 	    	}
