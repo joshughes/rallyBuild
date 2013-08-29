@@ -32,23 +32,6 @@ import org.kohsuke.stapler.StaplerRequest;
 
 import com.rallydev.rest.RallyRestApi;
 
-/**
- * Sample {@link Builder}.
- *
- * <p>
- * When the user configures the project and enables this builder,
- * {@link DescriptorImpl#newInstance(StaplerRequest)} is invoked
- * and a new {@link RallyBuild} is created. The created
- * instance is persisted to the project configuration XML by using
- * XStream, so this allows you to use instance fields (like {@link #name})
- * to remember the configuration.
- *
- * <p>
- * When a build is performed, the {@link #perform(AbstractBuild, Launcher, BuildListener)}
- * method will be invoked. 
- *
- * @author Kohsuke Kawaguchi
- */
 public class RallyBuild extends Builder {
 
     public final String issueString;
@@ -121,8 +104,6 @@ public class RallyBuild extends Builder {
 
     @Override
     public boolean perform(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
-        // This is where you 'build' the project.
-        // Since this is a dummy, we just say 'hello world' and call that a build.
     	
     	EnvVars env = build.getEnvironment(listener); 
         String expandedCommentText = env.expand(commentText);
@@ -342,14 +323,7 @@ public class RallyBuild extends Builder {
         return (DescriptorImpl)super.getDescriptor();
     }
 
-    /**
-     * Descriptor for {@link RallyBuild}. Used as a singleton.
-     * The class is marked as public so that it can be accessed from views.
-     *
-     * <p>
-     * See <tt>src/main/resources/hudson/plugins/hello_world/HelloWorldBuilder/*.jelly</tt>
-     * for the actual HTML fragment for the configuration screen.
-     */
+
     @Extension // This indicates to Jenkins that this is an implementation of an extension point.
     public static final class DescriptorImpl extends BuildStepDescriptor<Builder> {
         /**
