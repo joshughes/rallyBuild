@@ -18,6 +18,8 @@
        	<f:booleanRadio field="updateOnce"/>
   </f:entry>
   
+  <f:section title="The configuration below will be used to determine if the artifact meets the criteria we want">
+  
   <f:entry field="preRallyState"
   		   title="${%State of issue before update}"
   		   description="${%States the issue can be in before update}">
@@ -31,7 +33,7 @@
   			</f:entry>
   		</table>
   		<div align="right">
-        	<input type="button" value="Delete Tag" class="repeatable-delete" style="margin-left: 1em;" />
+        	<input type="button" value="Delete State" class="repeatable-delete" style="margin-left: 1em;" />
     	</div>
     </f:repeatable>
   </f:entry>
@@ -58,11 +60,10 @@
 		    	</table>
 			</f:block>
 
-  
-  
-  
+  </f:section>
+  <f:section title="The configuration below will be actions applied to the Rally Artifact">
   <f:block>
-     <table>
+     <table width="100%">
        <f:optionalBlock name="createComment" title="Add Comment to issue" field="createComment">
          <f:entry title="Comment Text" field="commentText">
            <f:textbox name="commentText" />
@@ -72,7 +73,7 @@
    </f:block>
    
    <f:block>
-     <table>
+     <table width="100%">
        <f:optionalBlock name="changeRallyState" title="Change Issue State" field="changeRallyState">
          <f:entry title="Enter a state for the issue" field="issueRallyState">
         	<f:textbox name="issueRallyState" />
@@ -82,7 +83,7 @@
    </f:block>
    
    <f:block>
-     <table>
+     <table width="100%">
        <f:optionalBlock name="changeDefectRallyState" title="Change Defect State" field="changeDefectRallyState">
          <f:entry title="Enter a state for the issue" field="defectRallyState">
         	<f:textbox name="defectRallyState" />
@@ -92,7 +93,7 @@
    </f:block>
    
    <f:block>
-     <table>
+     <table width="100%">
        <f:optionalBlock name="changeReady" title="Set issue ready" field="changeReady">
        <f:entry title="Issue Ready">
        	<f:booleanRadio field="issueReady"/>
@@ -100,5 +101,5 @@
        </f:optionalBlock>
      </table>
    </f:block>
-  
+  </f:section>
 </j:jelly>
