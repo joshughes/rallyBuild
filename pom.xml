@@ -9,9 +9,9 @@
   <url>http://wiki.jenkins-ci.org/display/JENKINS/rallyBuild</url>
 
   <scm>
-        <connection>scm:git:ssh://github.com/jenkinsci/rallyBuild.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/rallyBuild.git</developerConnection>
-        <url>https://github.com/jenkinsci/rallyBuild</url>
+        <connection>scm:git:ssh://github.com/joshughes/rallyBuild.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/joshughes/rallyBuild.git</developerConnection>
+        <url>https://github.com/joshughes/rallyBuild</url>
   </scm>
 
   <developers>
