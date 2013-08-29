@@ -6,6 +6,21 @@
     <version>1.509.1</version><!-- which version of Jenkins is this plugin built against? -->
   </parent>
 
+  <url>http://wiki.jenkins-ci.org/display/JENKINS/rallyBuild</url>
+
+  <scm>
+        <connection>scm:git:ssh://github.com/jenkinsci/rallyBuild.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/jenkinsci/rallyBuild.git</developerConnection>
+        <url>https://github.com/jenkinsci/rallyBuild</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <id>joshughes</id>
+      <name>Joseph Hughes</name>
+    </developer>
+  </developers>
+
   <groupId>org.jenkins-ci.plugins</groupId>
   <artifactId>rallyBuild</artifactId>
   <version>1.1-SNAPSHOT</version>
