@@ -2,5 +2,5 @@
   This view is used to render the installed plugins page.
 -->
 <div>
-  This plugin is a sample to explain how to write a Jenkins plugin.
+  This plugin will find Rally artifacts and update them. The goal is to allow your coding process to keep your Rally Project Artifacts up to date. 
 </div>
