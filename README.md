@@ -3,13 +3,14 @@ A project for updating rally through Jenkins Builds. The goal being that your da
 
 ##Configurataion
 
-####Global Configuration 
+###Global Configuration 
 **Rally Server Url** - Should be set to the url where your rally instance resides
 
 **Rally Username** - Should be set to the user you want Jenkins to use to update Rally 
 
 **Rally Password** - Password for the configured Rally user
 
+###Job Configuration
 ####Preconditions
 You can configure RallyBuild to look at an issue and see if the following criteria are met
 
@@ -27,14 +28,14 @@ RallyBuild can update an Artifact with the following
 
 
 ###Example of use with GitFlow
-####Move ticket to in progress 
+####Move artifact to in progress 
 1. Create a branch with your formatted artifact id in the branch name. `US1232-Some-Story`
 2. Jenkins job that builds new branches and passes branch name to RallyBuild
 ![image](https://raw.github.com/joshughes/rallyBuild/gh-pages/images/NewBranchBuildJob.png)
 
 Now the branch has been found by Jenkins and a comment with the branch name is in the Rally artifact and it has been moved to In-Progress
 
-####Update the ticket with pull request infromation 
+####Update the artifact with pull request infromation 
 1. Install the [GitHub Pull Request Builder](https://github.com/jenkinsci/ghprb-plugin)
 2. Setup the pull request job to comment on the ticket with the pull request infromation and also ensure the ticket is in the In-Progress State. 
 
@@ -42,7 +43,7 @@ Now the branch has been found by Jenkins and a comment with the branch name is i
 
 Now the ticket has infromation about the pull request and any memeber of the team can find the branch and the pull request to review the code. 
 
-####Detect branches being merged to develop/master
+####Mark Rally Artifact as 'Ready' when PR's are merged
 1. Setup Jenkins Job like the following 
 
 ![image](https://raw.github.com/joshughes/rallyBuild/gh-pages/images/MergeDetectJob.png)
