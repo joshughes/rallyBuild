@@ -1,9 +1,9 @@
 #RallyBuild 
-A project for updating rally through Jenkins Builds
+A project for updating rally through Jenkins Builds. The goal being that your daily coding activities, and the builds those activies trigger, will keep your tickets up to date for you.
 
-###Configurataion
-####Configuration
-#####Global Configuration 
+##Configurataion
+
+####Global Configuration 
 **Rally Server Url** - Should be set to the url where your rally instance resides
 
 **Rally Username** - Should be set to the user you want Jenkins to use to update Rally 
