@@ -14,13 +14,51 @@
     <f:textbox field="issueString"/>
   </f:entry>
   
-   <f:entry title="Issue Regex" >
-    <f:textbox field="issueRegex" default="(DE\d*|US\d*)"/>
-  </f:entry>
-  
   <f:entry name="updateOnce" title="Update issues only once?">
        	<f:booleanRadio field="updateOnce"/>
   </f:entry>
+  
+  <f:entry field="preRallyState"
+  		   title="${%State of issue before update}"
+  		   description="${%States the issue can be in before update}">
+  	<f:repeatable field="preRallyState"
+  				  add="${%Add Prerequisite State}">
+  		<table width="100%">
+  			<br/>
+  			<f:entry field="stateName"
+  					 title="${%State to check}">
+  				<f:textbox/>
+  			</f:entry>
+  		</table>
+  		<div align="right">
+        	<input type="button" value="Delete Tag" class="repeatable-delete" style="margin-left: 1em;" />
+    	</div>
+    </f:repeatable>
+  </f:entry>
+  				 
+
+		  	<f:block>
+		     	<table>
+		       		<f:optionalBlock name="preComment" title="Comment on issue is present" field="preComment">
+		         		<f:entry title="Comment Text" field="preCommentText">
+		           			<f:textbox name="preCommentText" />
+		         		</f:entry>
+		       		</f:optionalBlock>
+		    	</table>
+		   	</f:block>
+	   
+	   
+		   	<f:block>
+		     	<table>
+		       		<f:optionalBlock name="preReady" title="Issue is ready" field="preReady">
+			       		<f:entry title="preReadyState">
+			       			<f:booleanRadio field="preReadyState"/>
+			       		</f:entry>
+		       		</f:optionalBlock>
+		    	</table>
+			</f:block>
+
+  
   
   
   <f:block>
@@ -38,6 +76,16 @@
        <f:optionalBlock name="changeRallyState" title="Change Issue State" field="changeRallyState">
          <f:entry title="Enter a state for the issue" field="issueRallyState">
         	<f:textbox name="issueRallyState" />
+		 </f:entry>
+       </f:optionalBlock>
+     </table>
+   </f:block>
+   
+   <f:block>
+     <table>
+       <f:optionalBlock name="changeDefectRallyState" title="Change Defect State" field="changeDefectRallyState">
+         <f:entry title="Enter a state for the issue" field="defectRallyState">
+        	<f:textbox name="defectRallyState" />
 		 </f:entry>
        </f:optionalBlock>
      </table>

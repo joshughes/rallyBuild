@@ -34,11 +34,11 @@ public class ReadyAction extends RallyAction {
 		Boolean currentReadiness = currentArtifact.get("Ready").getAsBoolean();
 		if(currentReadiness==this.ready){
 			listener.getLogger().println("Artifact is already ready status "+this.ready+" so not updating.");
-			logger.info("Artifact is already ready status "+this.ready+" so not updating.");
+			logger.info("Artifact is already ready status "+this.ready);
 			return true;
 		}
 		listener.getLogger().println("Artifact is not ready status "+this.ready+" so updating.");
-		logger.info("Artifact is not ready status "+this.ready+" so updating.");
+		logger.info("Artifact is not ready status "+this.ready);
 		return false;
 	}
 

@@ -55,7 +55,9 @@ public class CommentAction implements Action{
 		for(JsonElement currentComment:currentComments){
 			JsonObject commentObject = currentComment.getAsJsonObject();
 			String currentCommentText = commentObject.get("Text").getAsString();
-			if(currentCommentText.equals(this.comment)){
+			currentCommentText = currentCommentText.replaceAll("\\s","").toLowerCase();
+			String compareComment = this.comment.replaceAll("\\s","").toLowerCase();
+			if(currentCommentText.equals(compareComment)){
 				listener.getLogger().println("Found duplicate comment: "+comment);
 				logger.info("Found duplicate comment: "+comment);
 				return true;

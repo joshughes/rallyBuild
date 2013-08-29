@@ -1,0 +1,213 @@
+{
+    "QueryResult": {
+        "_rallyAPIMajor": "2",
+        "_rallyAPIMinor": "0",
+        "Errors": [],
+        "Warnings": [],
+        "TotalResultCount": 5,
+        "StartIndex": 1,
+        "PageSize": 20,
+        "Results": [
+            {
+                "_rallyAPIMajor": "2",
+                "_rallyAPIMinor": "0",
+                "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/conversationpost/123",
+                "_objectVersion": "1",
+                "CreationDate": "2013-07-15T13:53:05.745Z",
+                "_CreatedAt": "Jul 15",
+                "ObjectID": 12931341646,
+                "Subscription": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/subscription/123",
+                    "_refObjectName": "pal",
+                    "_type": "Subscription"
+                },
+                "Workspace": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/workspace/123",
+                    "_refObjectName": "Pal",
+                    "_type": "Workspace"
+                },
+                "Artifact": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/defect/123",
+                    "_refObjectName": "'TEststaetase",
+                    "_type": "Defect"
+                },
+                "PostNumber": 0,
+                "Text": "Looks like the outcome of this ticket was another ticket... It is not linked here though.&nbsp;",
+                "User": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/user/1231231",
+                    "_refObjectName": "Hughes",
+                    "_type": "User"
+                },
+                "_type": "ConversationPost"
+            },
+            {
+                "_rallyAPIMajor": "2",
+                "_rallyAPIMinor": "0",
+                "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/conversationpost/123123123",
+                "_objectVersion": "1",
+                "CreationDate": "2013-07-16T17:03:21.636Z",
+                "_CreatedAt": "Jul 16",
+                "ObjectID": 12955402142,
+                "Subscription": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/subscription/123123123",
+                    "_refObjectName": "pal",
+                    "_type": "Subscription"
+                },
+                "Workspace": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/workspace/123123123",
+                    "_refObjectName": "pal PD",
+                    "_type": "Workspace"
+                },
+                "Artifact": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/defect/12312321312",
+                    "_refObjectName": "'Impressions served' in CM2 incorrect",
+                    "_type": "Defect"
+                },
+                "PostNumber": 1,
+                "Text": "We should use this ticket, I do not see any reason why to create a new one. This is a big issues for Traffickers.",
+                "User": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/user/123123123123",
+                    "_refObjectName": "Haley",
+                    "_type": "User"
+                },
+                "_type": "ConversationPost"
+            },
+            {
+                "_rallyAPIMajor": "2",
+                "_rallyAPIMinor": "0",
+                "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/conversationpost/12312312",
+                "_objectVersion": "1",
+                "CreationDate": "2013-08-07T19:51:37.157Z",
+                "_CreatedAt": "Aug 7",
+                "ObjectID": 13341396497,
+                "Subscription": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/subscription/123123123",
+                    "_refObjectName": "pal",
+                    "_type": "Subscription"
+                },
+                "Workspace": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/workspace/1231231",
+                    "_refObjectName": "pal PD",
+                    "_type": "Workspace"
+                },
+                "Artifact": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/defect/123",
+                    "_refObjectName": "'Impressions served' in CM2 incorrect",
+                    "_type": "Defect"
+                },
+                "PostNumber": 2,
+                "Text": "A branch of the name origin/ad-actuals-DE20409 was created for this artifact. Marking it as In-Progress",
+                "User": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/user/123",
+                    "_refObjectName": "Hughes, Joe (joshughes)",
+                    "_type": "User"
+                },
+                "_type": "ConversationPost"
+            },
+            {
+                "_rallyAPIMajor": "2",
+                "_rallyAPIMinor": "0",
+                "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/conversationpost/123",
+                "_objectVersion": "1",
+                "CreationDate": "2013-08-12T14:16:36.896Z",
+                "_CreatedAt": "Aug 12",
+                "ObjectID": 13412698798,
+                "Subscription": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/subscription/123",
+                    "_refObjectName": "pal",
+                    "_type": "Subscription"
+                },
+                "Workspace": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/workspace/123",
+                    "_refObjectName": "pal PD",
+                    "_type": "Workspace"
+                },
+                "Artifact": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/defect/123",
+                    "_refObjectName": "'Impressions served' in CM2 incorrect",
+                    "_type": "Defect"
+                },
+                "PostNumber": 3,
+                "Text": "A branch of the name origin/reporting-DE20409 was created for this artifact. Marking it as In-Progress",
+                "User": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/user/123",
+                    "_refObjectName": "Users, Boston,  (bostonusers)",
+                    "_type": "User"
+                },
+                "_type": "ConversationPost"
+            },
+            {
+                "_rallyAPIMajor": "2",
+                "_rallyAPIMinor": "0",
+                "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/conversationpost/13448702944",
+                "_objectVersion": "1",
+                "CreationDate": "2013-08-13T21:51:31.053Z",
+                "_CreatedAt": "Aug 13",
+                "ObjectID": 13448702944,
+                "Subscription": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/subscription/123",
+                    "_refObjectName": "pal",
+                    "_type": "Subscription"
+                },
+                "Workspace": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/workspace/123",
+                    "_refObjectName": "pal PD",
+                    "_type": "Workspace"
+                },
+                "Artifact": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/defect/123",
+                    "_refObjectName": "'Impressions served' in CM2 incorrect",
+                    "_type": "Defect"
+                },
+                "PostNumber": 4,
+                "Text": "<style rallydeleteme=\"false\" type=\"text/css\">.rally-rte-class-0c0432eb8{background-color: rgb(255, 255, 255); font-family: arial, helvetica, sans-serif;}</style> There has been alot of work in coordinating this and trying to get it into production. <div>There endpoint is not currently production.</div> <div><br /></div> <div>We had to request a new endpoint from reporting for this because there was nothing existing in there new system.</div> <div>After the request they sent me a screenshot as a spec and it was not exactly what I had asked for so I asked them to change some things.</div> <div>They said they had and it would be in production I dont know what will be in production and what the url will be.</div> <div><br /></div> <div>The example they gave me is localhost:8080<span class=\"rally-rte-class-0c0432eb8\">/reporting-api/buy_item/performance?buy_items=CAMP_###</span></div> <div><span class=\"rally-rte-class-0c0432eb8\">I expect it to be in the domain&nbsp;</span><span class=\"rally-rte-class-0c0432eb8\">http://rpt-api.where.com/</span></div> <div><span class=\"rally-rte-class-0c0432eb8\"><br /></span></div> <div><span class=\"rally-rte-class-0c0432eb8\">=========================</span></div> <div><span class=\"rally-rte-class-0c0432eb8\"><br /></span></div> <div><font face=\"arial, helvetica, sans-serif\">My request originally was</font></div> <div> <p class=\"p1\">----------------------------------</p> <p class=\"p1\">#{HOST}/buy_items/1.json =&gt; {É \"impression_count\": 1000 É}.</p> <p class=\"p1\"><br /></p> <p class=\"p1\">The spec that I think was agreed on is</p> <p class=\"p1\">----------------------------------------------------</p> <p class=\"p1\">Request:</p> <p class=\"p1\">rpt.where.com/reporting-api/dgm/buy_items</p> <br /> <p class=\"p1\">Params:</p> <p class=\"p1\">buy_item_id - required</p> <p class=\"p1\">start_date - optional</p> <p class=\"p1\">end_date - optional</p> <p class=\"p1\">frequency - optional</p> <p class=\"p1\"><br /></p> <p class=\"p1\">Response:</p> <p class=\"p1\">{</p> <p class=\"p1\">\"impressions\": 1000</p> <p class=\"p1\">}</p> </div>",
+                "User": {
+                    "_rallyAPIMajor": "2",
+                    "_rallyAPIMinor": "0",
+                    "_ref": "https://rally1.rallydev.com/slm/webservice/v2.0/user/123",
+                    "_refObjectName": "Thorne",
+                    "_type": "User"
+                },
+                "_type": "ConversationPost"
+            }
+        ]
+    }
+}

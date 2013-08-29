@@ -1,0 +1,1 @@
+Found duplicate comment: A branch of the name origin/reporting-DE20409 was created     for this artifact. Marking it as In-Progress    

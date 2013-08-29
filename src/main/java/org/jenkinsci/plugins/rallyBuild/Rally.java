@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.jenkinsci.plugins.rallyBuild.rallyActions.Action;
+import org.jenkinsci.plugins.rallyBuild.rallyActions.StateAction;
 
 import com.google.gson.JsonObject;
 import com.rallydev.rest.RallyRestApi;
@@ -29,15 +30,17 @@ public class Rally {
 	private static final Logger logger = Logger.getLogger(Rally.class.getName());
 	private final BuildListener listener;
 	
-	public Rally(Set<String> updatedIssues, String userName, String password, String host, BuildListener listener) throws URISyntaxException{
-		restApi = new RallyRestApi(new URI(host), userName, password);
+	public Rally(RallyRestApi api, BuildListener listener) throws URISyntaxException{
+		//restApi = new RallyRestApi(new URI(host), userName, password);
+		restApi=api;
 		this.listener=listener;
 	}
 	
 	
-	public HashSet<String> getIssues(String issueString, String issueRegex){
+	public HashSet<String> getIssues(String issueString){
+		String issueRegex = "(US\\d+|DE\\d+)";
 		List<String> foundIssues = new ArrayList<String>();
-		Pattern pattern = Pattern.compile(issueRegex);
+		Pattern pattern = Pattern.compile(issueRegex,Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(issueString);
 		logger.info("Looking for issue in: "+issueString +" with REGEX: "+issueRegex);
 		listener.getLogger().println("Looking for issue in: "+issueString +" with REGEX: "+issueRegex);
@@ -51,18 +54,42 @@ public class Rally {
 		return unquieIssues;
 	}
 	
-	public void updateIssues(HashSet<String> issues, List<Action> actions, Boolean updateOnce) throws IOException{
+	public void updateIssues(HashSet<String> issues, List<Action> preConditions, List<StateAction> preStates, List<Action> actions, Boolean updateOnce) throws IOException{
 		for(String issue: issues){
+			UpdateArtifact artifact = getUpdateArtifact(issue);
 			listener.getLogger().println("Updating Issue "+issue);
 			logger.info("Updating Issue "+issue);
-			executActions(issue,actions,updateOnce);
+			if(preConditionsMet(artifact,preConditions,preStates)){
+				executActions(artifact,actions,updateOnce);
+			}
 		}
 
 	}
 	
-	private void executActions(String issue, List<Action> actions, Boolean updateOnce) throws IOException{
+	private Boolean preConditionsMet(UpdateArtifact artifact,List<Action> preConditions, List<StateAction> preStates) throws IOException{
+		listener.getLogger().println("Looking at "+preConditions.size()+" preConditions before we update");
+		for(Action condition: preConditions){
+			listener.getLogger().println("Checking PreCondition for artifact "+artifact.get_ref());
+			if(!condition.isExecuted(artifact, restApi, listener)){
+				listener.getLogger().println("Precondition failed "+condition.toString());
+				return false;
+			}
+		}
+		for(StateAction stateAction: preStates){
+			listener.getLogger().println("Checking if artifact is in correct state to update "+artifact.get_ref());
+			if(stateAction.isExecuted(artifact, restApi, listener)){
+				return true;
+			}
+		}
+		if(preStates.size()>0){
+			return false;
+		}
+		return true;
+	}
+	
+	
+	private void executActions(UpdateArtifact artifact, List<Action> actions, Boolean updateOnce) throws IOException{
 		for(Action action:actions){
-			UpdateArtifact artifact = getUpdateArtifact(issue);
 			if(!updateOnce){
 				action.execute(artifact, restApi, listener);
 			}
@@ -83,6 +110,8 @@ public class Rally {
 			objectId= urlParts[urlParts.length-1];
 		}
 		return new UpdateArtifact(objectId,_ref,_type);
+		
+
 	}
 	
 	
@@ -93,7 +122,10 @@ public class Rally {
 		defectRequest.setOrder("Priority ASC,FormattedID ASC"); 
 		QueryResponse queryResponse = restApi.query(defectRequest);
 		System.out.println(queryResponse.getResults().toString());
-		return (JsonObject) queryResponse.getResults().get(0);
+		if(queryResponse.getResults().size()>0){
+			return (JsonObject) queryResponse.getResults().get(0);
+		}
+			throw new IOException("Rally API did not return a result for artifact: "+formattedId);
 	}
 	
 

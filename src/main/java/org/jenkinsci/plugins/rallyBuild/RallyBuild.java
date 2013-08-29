@@ -5,10 +5,14 @@ import hudson.Launcher;
 import hudson.model.BuildListener;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
+import hudson.model.Descriptor;
+import hudson.model.AbstractDescribableImpl;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -20,10 +24,13 @@ import net.sf.json.JSONObject;
 
 import org.jenkinsci.plugins.rallyBuild.rallyActions.Action;
 import org.jenkinsci.plugins.rallyBuild.rallyActions.CommentAction;
+import org.jenkinsci.plugins.rallyBuild.rallyActions.DefectStateAction;
 import org.jenkinsci.plugins.rallyBuild.rallyActions.ReadyAction;
 import org.jenkinsci.plugins.rallyBuild.rallyActions.StateAction;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
+
+import com.rallydev.rest.RallyRestApi;
 
 /**
  * Sample {@link Builder}.
@@ -48,27 +55,40 @@ public class RallyBuild extends Builder {
 
     public final Boolean updateOnce;
     
-
-    public final String issueRegex;
-    
-    public String issueRallyState;  
-    public String commentText;
+    public String  issueRallyState; 
+    public String  defectRallyState;
+    public String  commentText;
     public Boolean issueReady;
-    public Boolean changeRallyState=false;
-    public Boolean createComment=false;
-    public Boolean changeReady=false;
+    
+    public String  preCommentText;
+    public String  preIssueRallyState;
+    public Boolean preReadyState;
+    
+    public Boolean changeRallyState =false;
+    public Boolean changeDefectRallyState= false;
+    public Boolean createComment    =false;
+    public Boolean changeReady      =false;
+    
+
+    public Boolean preComment       =false;
+    public Boolean preReady         =false;
+    
     public Set<String> updatedIssues = new HashSet<String>();
     private static final Logger logger = Logger.getLogger(RallyBuild.class.getName());
-  
+    
+    public List<PreRallyState> preRallyState;
 
     //Fields in config.jelly must match the parameter names in the "DataBoundConstructor"
     @DataBoundConstructor
-    public RallyBuild(String issueString, String issueRegex, Boolean updateOnce,
-    		 EnableReadyBlock changeReady,CreateCommentBlock createComment, ChangeStateBlock changeRallyState) {
+    public RallyBuild(List<PreRallyState> preRallyState, String issueString, Boolean updateOnce, PreCommentBlock preComment, 
+    		 PreReadyBlock preReady, EnableReadyBlock changeReady,CreateCommentBlock createComment, ChangeStateBlock changeRallyState, ChangeDefectStateBlock changeDefectRallyState) {
         this.issueString = issueString;
-        this.issueRegex= issueRegex;
         this.updateOnce=updateOnce;
-  
+        this.preRallyState=preRallyState;
+        if(changeDefectRallyState!=null){
+        	this.changeDefectRallyState=true;
+        	this.defectRallyState=changeDefectRallyState.getIssueState();
+        }
         if(changeRallyState!=null){
         	this.changeRallyState=true;
         	this.issueRallyState=changeRallyState.getIssueState();
@@ -82,6 +102,18 @@ public class RallyBuild extends Builder {
         	this.changeReady=true;
         	this.issueReady=changeReady.getIssueReady();
         }
+        
+
+        	if(preComment!=null){
+        		this.preComment=true;
+        		this.preCommentText = preComment.getComment();
+        	}
+        	if(preReady!=null){
+        		this.preReady=true;
+        		this.preReadyState=preReady.getIssueReady();
+        	}
+                
+        
        
     }
 
@@ -93,38 +125,73 @@ public class RallyBuild extends Builder {
         // Since this is a dummy, we just say 'hello world' and call that a build.
     	
     	EnvVars env = build.getEnvironment(listener); 
-        String expandedCommentText = env.expand(commentText); 
+        String expandedCommentText = env.expand(commentText);
+        String expandedPreConditionText = env.expand(preCommentText);
         String expandedIssueString = env.expand(issueString);
     	List<Action> rallyActions = new ArrayList<Action>();
+    	List<Action> preConditions = new ArrayList<Action>();
+    	List<StateAction> preStates = new ArrayList<StateAction>();
+    	
     	Rally rally = null;
     	
     	try {
     		logger.info("Server "+getDescriptor().getRallyServer());
-			rally = new Rally(updatedIssues,getDescriptor().getRallyUser(),getDescriptor().getRallyPassword(),getDescriptor().getRallyServer(),listener);
+    		RallyRestApi api = new RallyRestApi(new URI(getDescriptor().getRallyServer()), getDescriptor().getRallyUser(), getDescriptor().getRallyPassword());
+			rally = new Rally(api,listener);
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
     	
     	if(rally!=null){
+    		
+    		logger.info("Pre Condition Comment "+createComment);
+	    	if(preComment){
+	    		CommentAction comment = new CommentAction(expandedPreConditionText);
+	    		preConditions.add(comment);
+	    	}
+	    	
+	    	logger.info("Pre Condition Ready "+changeReady);
+	    	if(preReady){
+	    		ReadyAction ready = new ReadyAction(preReadyState);
+	    		preConditions.add(ready);
+	    	}
+	    	
+	    	logger.info("Pre RallyStates "+preRallyState.size());
+	    	if(preRallyState!=null && preRallyState.size()>0){
+	    		for(PreRallyState rallyState :preRallyState){
+	    			StateAction action = new StateAction(rallyState.getStateName());
+	    			preStates.add(action);
+	    		}
+	    	}
+	    	
     		logger.info("Create Comment "+createComment);
 	    	if(createComment){
 	    		CommentAction comment = new CommentAction(expandedCommentText);
 	    		rallyActions.add(comment);
 	    	}
 	    	
-	    	logger.info("Create Comment "+changeReady);
+	    	logger.info("Mark ready "+changeReady);
 	    	if(changeReady){
 	    		ReadyAction ready = new ReadyAction(issueReady);
 	    		rallyActions.add(ready);
 	    	}
 	    	
-	    	logger.info("Create Comment "+changeRallyState);
+	    	logger.info("Change State "+changeRallyState);
 	    	if(changeRallyState){
 	    		StateAction state = new StateAction(issueRallyState);
 	    		rallyActions.add(state);
 	    	}
-	    	HashSet<String> issues = rally.getIssues(expandedIssueString, issueRegex);
-	    	rally.updateIssues(issues, rallyActions,updateOnce);
+	    	
+	    	logger.info("Change State "+changeDefectRallyState);
+	    	if(changeDefectRallyState){
+	    		DefectStateAction defectState = new DefectStateAction(defectRallyState);
+	    		rallyActions.add(defectState);
+	    	}
+	    	
+	    	
+	    	
+	    	HashSet<String> issues = rally.getIssues(expandedIssueString);
+	    	rally.updateIssues(issues,preConditions,preStates,rallyActions,updateOnce);
     	}
     	return true;
     }
@@ -161,6 +228,47 @@ public class RallyBuild extends Builder {
 
     }
     
+    public static class ChangeDefectStateBlock
+    {
+        private String defectRallyState;
+
+        @DataBoundConstructor
+        public ChangeDefectStateBlock(String defectRallyState)
+        {
+            this.defectRallyState = defectRallyState;
+        }
+
+		public String getIssueState() {
+			return defectRallyState;
+		}
+
+    }
+    
+    public static final class PreRallyState extends AbstractDescribableImpl<PreRallyState> implements Serializable{
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 147571780733339453L;
+		private String stateName;
+    	
+    	@DataBoundConstructor
+    	public PreRallyState(String stateName){
+    		this.stateName=stateName;
+    	}
+
+		public String getStateName() {
+			return stateName;
+		}
+		
+
+	    @Extension
+	    public static class DescriptorImpl extends Descriptor<PreRallyState> {
+	        public String getDisplayName() { return ""; }
+	    }
+	
+    	
+    }
+    
     public static class CreateCommentBlock
     {
         private String commentText;
@@ -176,6 +284,55 @@ public class RallyBuild extends Builder {
 		}
 
     }
+    
+    public static class PreCommentBlock
+    {
+        private String preCommentText;
+
+        @DataBoundConstructor
+        public PreCommentBlock(String preCommentText)
+        {
+            this.preCommentText = preCommentText;
+        }
+
+		public String getComment() {
+			return preCommentText;
+		}
+
+    }
+    
+    public static class PreReadyBlock
+    {
+        private Boolean preReadyState;
+
+        @DataBoundConstructor
+        public PreReadyBlock(Boolean preReadyState)
+        {
+            this.preReadyState = preReadyState;
+        }
+
+		public Boolean getIssueReady() {
+			return preReadyState;
+		}
+
+    }
+    
+    public static class PreRallyStateBlock
+    {
+        private String preIssueRallyState;
+
+        @DataBoundConstructor
+        public PreRallyStateBlock(String preIssueRallyState)
+        {
+            this.preIssueRallyState = preIssueRallyState;
+        }
+
+		public String getIssueState() {
+			return preIssueRallyState;
+		}
+
+    }
+    
 
     // Overridden for better type safety.
     // If your plugin doesn't really define any property on Descriptor,
