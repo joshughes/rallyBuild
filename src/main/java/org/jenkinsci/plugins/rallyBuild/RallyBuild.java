@@ -137,7 +137,6 @@ public class RallyBuild extends Builder {
 	    		preConditions.add(ready);
 	    	}
 	    	
-	    	logger.info("Pre RallyStates "+preRallyState.size());
 	    	if(preRallyState!=null && preRallyState.size()>0){
 	    		for(PreRallyState rallyState :preRallyState){
 	    			StateAction action = new StateAction(rallyState.getStateName());
