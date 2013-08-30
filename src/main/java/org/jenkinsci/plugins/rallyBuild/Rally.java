@@ -13,9 +13,12 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.jenkinsci.plugins.rallyBuild.rallyActions.Action;
 import org.jenkinsci.plugins.rallyBuild.rallyActions.StateAction;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.rallydev.rest.RallyRestApi;
 import com.rallydev.rest.request.QueryRequest;
@@ -123,9 +126,26 @@ public class Rally {
 		QueryResponse queryResponse = restApi.query(defectRequest);
 		System.out.println(queryResponse.getResults().toString());
 		if(queryResponse.getResults().size()>0){
-			return (JsonObject) queryResponse.getResults().get(0);
+			JsonArray results = queryResponse.getResults();
+			
+			if(StringUtils.containsIgnoreCase(formattedId,"us")){
+				return getResultofType("HierarchicalRequirement",results);
+			}
+			if(StringUtils.containsIgnoreCase(formattedId,"de")){
+				return getResultofType("Defect",results);
+			}
 		}
 			throw new IOException("Rally API did not return a result for artifact: "+formattedId);
+	}
+	
+	private JsonObject getResultofType(String type, JsonArray results) throws IOException{
+		for(JsonElement result: results){
+			JsonObject resultObject = (JsonObject)result;
+			if(resultObject.get("_type").getAsString().equals(type)){
+				return resultObject;
+			}
+		}
+		throw new IOException("Rally API did not return a result of type: "+type+" Results were: "+results.getAsString());
 	}
 	
 
