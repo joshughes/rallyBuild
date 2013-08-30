@@ -1,6 +1,9 @@
 #RallyBuild 
 A project for updating rally through Jenkins Builds. The goal being that your daily coding activities, and the builds those activies trigger, will keep your tickets up to date for you.
 
+##Installation
+RallyBuild is avaliable in the Jenkins Plugin Manager
+
 ##Configurataion
 
 ###Global Configuration 
