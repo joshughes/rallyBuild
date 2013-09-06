@@ -32,6 +32,7 @@ public class Rally {
 	
 	private static final Logger logger = Logger.getLogger(Rally.class.getName());
 	private final BuildListener listener;
+	private List<UpdateArtifact> artifacts = new ArrayList<UpdateArtifact>();
 	
 	public Rally(RallyRestApi api, BuildListener listener) throws URISyntaxException{
 		//restApi = new RallyRestApi(new URI(host), userName, password);
@@ -60,6 +61,7 @@ public class Rally {
 	public void updateIssues(HashSet<String> issues, List<Action> preConditions, List<StateAction> preStates, List<Action> actions, Boolean updateOnce) throws IOException{
 		for(String issue: issues){
 			UpdateArtifact artifact = getUpdateArtifact(issue);
+			artifacts.add(artifact);
 			listener.getLogger().println("Updating Issue "+issue);
 			logger.info("Updating Issue "+issue);
 			if(preConditionsMet(artifact,preConditions,preStates)){
@@ -103,21 +105,21 @@ public class Rally {
 		}
 	}
 	
-	private UpdateArtifact getUpdateArtifact(String formattedId) throws IOException{
+	public UpdateArtifact getUpdateArtifact(String formattedId) throws IOException{
 		JsonObject artifact = getArtifact(formattedId);
 		String _ref     = artifact.get("_ref").getAsString();
 		String _type    = artifact.get("_type").getAsString();
+		String _refObjectName = artifact.get("_refObjectName").getAsString();
+		String description = artifact.get("Description").getAsString();
 		String urlParts[] = _ref.split("/");
 		String objectId ="";
 		if(urlParts.length>0){
 			objectId= urlParts[urlParts.length-1];
 		}
-		return new UpdateArtifact(objectId,_ref,_type);
+		return new UpdateArtifact(objectId,_ref,_type,description,formattedId, _refObjectName);
 		
 
 	}
-	
-	
 	
 	private JsonObject getArtifact(String formattedId) throws IOException{
 		QueryRequest defectRequest = new QueryRequest("artifact"); 
@@ -147,6 +149,23 @@ public class Rally {
 		}
 		throw new IOException("Rally API did not return a result of type: "+type+" Results were: "+results.getAsString());
 	}
+	
+	public String getHTMLIssueSummary(){
+		StringBuilder builder = new StringBuilder();
+		for(UpdateArtifact artifact: artifacts){
+			builder.append(artifact.getFormattedId()+" - ");
+			builder.append(artifact.get_refObjectName());
+			builder.append(" <br>");
+		}
+		return builder.toString();
+	}
+
+
+	public List<UpdateArtifact> getArtifacts() {
+		return artifacts;
+	}
+	
+
 	
 
 

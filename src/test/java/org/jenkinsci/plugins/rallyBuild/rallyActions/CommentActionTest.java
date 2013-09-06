@@ -45,7 +45,7 @@ public class CommentActionTest {
 		when(restApi.get(any(GetRequest.class))).thenReturn(getResponse);
 		
 		CommentAction action = new CommentAction("A branch of the name origin/reporting-DE20409 was created     for this artifact. Marking it as In-Progress    ");
-		UpdateArtifact artifact = new UpdateArtifact("Test","123","123");
+		UpdateArtifact artifact = new UpdateArtifact("Test","123","123","123","123","123");
 		Assert.isTrue(action.isExecuted(artifact, restApi, listener));
 		
 	}

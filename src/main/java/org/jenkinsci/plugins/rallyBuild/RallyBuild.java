@@ -3,9 +3,12 @@ import hudson.EnvVars;
 import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.BuildListener;
+import hudson.model.ParameterValue;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Descriptor;
+import hudson.model.ParametersAction;
+import hudson.model.StringParameterValue;
 import hudson.model.AbstractDescribableImpl;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
@@ -30,6 +33,7 @@ import org.jenkinsci.plugins.rallyBuild.rallyActions.StateAction;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 
+import com.google.gson.Gson;
 import com.rallydev.rest.RallyRestApi;
 
 public class RallyBuild extends Builder {
@@ -46,6 +50,7 @@ public class RallyBuild extends Builder {
     public String  preCommentText;
     public String  preIssueRallyState;
     public Boolean preReadyState;
+	private final Gson gson = new Gson();
     
     public Boolean changeRallyState =false;
     public Boolean changeDefectRallyState= false;
@@ -170,7 +175,15 @@ public class RallyBuild extends Builder {
 	    	
 	    	
 	    	HashSet<String> issues = rally.getIssues(expandedIssueString);
+	    	
+
+	    	
 	    	rally.updateIssues(issues,preConditions,preStates,rallyActions,updateOnce);
+	    	
+	    	List<ParameterValue> params = new ArrayList<ParameterValue>();
+	    	params.add(new StringParameterValue("RALLY_ISSUES",gson.toJson(rally.getArtifacts())));
+	    	params.add(new StringParameterValue("RALLY_ISSUES_SUMMARY",rally.getHTMLIssueSummary()));
+	    	build.addAction(new ParametersAction(params));
     	}
     	return true;
     }
