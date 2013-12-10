@@ -61,11 +61,13 @@ public class Rally {
 	public void updateIssues(HashSet<String> issues, List<Action> preConditions, List<StateAction> preStates, List<Action> actions, Boolean updateOnce) throws IOException{
 		for(String issue: issues){
 			UpdateArtifact artifact = getUpdateArtifact(issue);
-			artifacts.add(artifact);
-			listener.getLogger().println("Updating Issue "+issue);
-			logger.info("Updating Issue "+issue);
-			if(preConditionsMet(artifact,preConditions,preStates)){
-				executActions(artifact,actions,updateOnce);
+				if(artifact != null){
+				artifacts.add(artifact);
+				listener.getLogger().println("Updating Issue "+issue);
+				logger.info("Updating Issue "+issue);
+				if(preConditionsMet(artifact,preConditions,preStates)){
+					executActions(artifact,actions,updateOnce);
+				}
 			}
 		}
 
@@ -107,21 +109,23 @@ public class Rally {
 	
 	public UpdateArtifact getUpdateArtifact(String formattedId) throws IOException{
 		JsonObject artifact = getArtifact(formattedId);
-		String _ref     = artifact.get("_ref").getAsString();
-		String _type    = artifact.get("_type").getAsString();
-		String _refObjectName = artifact.get("_refObjectName").getAsString();
-		String description = artifact.get("Description").getAsString();
-		String urlParts[] = _ref.split("/");
-		String objectId ="";
-		if(urlParts.length>0){
-			objectId= urlParts[urlParts.length-1];
+		if(artifact != null){
+			String _ref     = artifact.get("_ref").getAsString();
+			String _type    = artifact.get("_type").getAsString();
+			String _refObjectName = artifact.get("_refObjectName").getAsString();
+			String description = artifact.get("Description").getAsString();
+			String urlParts[] = _ref.split("/");
+			String objectId ="";
+			if(urlParts.length>0){
+				objectId= urlParts[urlParts.length-1];
+			}
+			return new UpdateArtifact(objectId,_ref,_type,description,formattedId, _refObjectName);
 		}
-		return new UpdateArtifact(objectId,_ref,_type,description,formattedId, _refObjectName);
+		return null;
 		
-
 	}
 	
-	private JsonObject getArtifact(String formattedId) throws IOException{
+	public JsonObject getArtifact(String formattedId) throws IOException{
 		QueryRequest defectRequest = new QueryRequest("artifact"); 
 		defectRequest.setQueryFilter(new QueryFilter("FormattedID", "=", formattedId)); 
 		defectRequest.setOrder("Priority ASC,FormattedID ASC"); 
@@ -137,17 +141,22 @@ public class Rally {
 				return getResultofType("Defect",results);
 			}
 		}
-			throw new IOException("Rally API did not return a result for artifact: "+formattedId);
+		return null;
 	}
 	
 	private JsonObject getResultofType(String type, JsonArray results) throws IOException{
 		for(JsonElement result: results){
-			JsonObject resultObject = (JsonObject)result;
-			if(resultObject.get("_type").getAsString().equals(type)){
-				return resultObject;
+			try{
+				JsonObject resultObject = (JsonObject)result;
+				if(resultObject.get("_type").getAsString().equals(type)){
+					return resultObject;
+				}
+			}
+			catch(RuntimeException ex){
+				System.out.println("Caught exception while trying to find type of object "+ex.toString());
 			}
 		}
-		throw new IOException("Rally API did not return a result of type: "+type+" Results were: "+results.getAsString());
+		return null;
 	}
 	
 	public String getHTMLIssueSummary(){

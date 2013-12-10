@@ -33,7 +33,6 @@ import org.jenkinsci.plugins.rallyBuild.rallyActions.StateAction;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 
-import com.google.gson.Gson;
 import com.rallydev.rest.RallyRestApi;
 
 public class RallyBuild extends Builder {
@@ -50,8 +49,7 @@ public class RallyBuild extends Builder {
     public String  preCommentText;
     public String  preIssueRallyState;
     public Boolean preReadyState;
-	private final Gson gson = new Gson();
-    
+	
     public Boolean changeRallyState =false;
     public Boolean changeDefectRallyState= false;
     public Boolean createComment    =false;
@@ -179,10 +177,11 @@ public class RallyBuild extends Builder {
 
 	    	
 	    	rally.updateIssues(issues,preConditions,preStates,rallyActions,updateOnce);
-	    	
 	    	List<ParameterValue> params = new ArrayList<ParameterValue>();
-	    	params.add(new StringParameterValue("RALLY_ISSUES",gson.toJson(rally.getArtifacts())));
-	    	params.add(new StringParameterValue("RALLY_ISSUES_SUMMARY",rally.getHTMLIssueSummary()));
+	    	if(rally.getArtifacts()!=null){
+		    	params.add(new StringParameterValue("RALLY_ISSUES_SUMMARY",rally.getHTMLIssueSummary()));
+	    	}
+	    	
 	    	build.addAction(new ParametersAction(params));
     	}
     	return true;
